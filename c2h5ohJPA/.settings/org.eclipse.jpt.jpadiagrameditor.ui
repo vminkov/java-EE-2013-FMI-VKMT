@@ -1,0 +1,9 @@
+#This file contains JPA Diagram Editor settings
+#Wed Apr 17 10:32:51 EEST 2013
+defaultTableNamePrefix=T_
+directEditAffectsClass=true
+accessType=field
+diagramFolder=diagrams
+collectionType=collection
+oneToManyOldStyle=false
+defaultPackage=c2h5oh.jpa
