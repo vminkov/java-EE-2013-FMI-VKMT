@@ -9,6 +9,5 @@
 		<class>c2h5oh.jpa.Waiter</class>
 		<class>c2h5oh.jpa.Bartender</class>
 		<class>c2h5oh.jpa.Director</class>
-		<class>c2h5oh.jpa.Entity1</class>
 	</persistence-unit>
 </persistence>
