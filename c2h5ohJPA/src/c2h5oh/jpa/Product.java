@@ -7,12 +7,12 @@ import c2h5oh.jpa.OrderItem;
 import java.util.Collection;
 
 @Entity
-@Table(name = "T_ARTICLE")
-public class Article {
+@Table(name = "T_PRODUCT")
+public class Product {
 
 	@Id
 	private long id;
-	@OneToMany(mappedBy = "article")
+	@OneToMany(mappedBy = "product")
 	private Collection<OrderItem> orderItem;
 	@Basic
 	private String name;

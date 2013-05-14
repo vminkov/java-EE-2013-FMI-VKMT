@@ -1,32 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><entities>
 	<entity>
-		<entity-name>c2h5oh.jpa.User</entity-name>
+		<entity-name>c2h5oh.jpa.Bartender</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>186</entity-height>
-		<entity-X-Coordinate>299</entity-X-Coordinate>
-		<entity-Y-Coordinate>23</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-	
-	<entity>
-		<entity-name>c2h5oh.jpa.Article</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>166</entity-height>
-		<entity-X-Coordinate>739</entity-X-Coordinate>
-		<entity-Y-Coordinate>40</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>c2h5oh.jpa.Order</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>206</entity-height>
-		<entity-X-Coordinate>500</entity-X-Coordinate>
-		<entity-Y-Coordinate>251</entity-Y-Coordinate>
+		<entity-height>70</entity-height>
+		<entity-X-Coordinate>250</entity-X-Coordinate>
+		<entity-Y-Coordinate>398</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -44,11 +22,22 @@
 	</entity>
 
 	<entity>
-		<entity-name>c2h5oh.jpa.Employee</entity-name>
+		<entity-name>c2h5oh.jpa.Order</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>206</entity-height>
+		<entity-X-Coordinate>500</entity-X-Coordinate>
+		<entity-Y-Coordinate>251</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>c2h5oh.jpa.Director</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>70</entity-height>
 		<entity-X-Coordinate>50</entity-X-Coordinate>
-		<entity-Y-Coordinate>150</entity-Y-Coordinate>
+		<entity-Y-Coordinate>469</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -66,22 +55,33 @@
 	</entity>
 
 	<entity>
-		<entity-name>c2h5oh.jpa.Bartender</entity-name>
+		<entity-name>c2h5oh.jpa.Product</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>70</entity-height>
-		<entity-X-Coordinate>250</entity-X-Coordinate>
-		<entity-Y-Coordinate>398</entity-Y-Coordinate>
+		<entity-height>166</entity-height>
+		<entity-X-Coordinate>739</entity-X-Coordinate>
+		<entity-Y-Coordinate>40</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
 	</entity>
 
 	<entity>
-		<entity-name>c2h5oh.jpa.Director</entity-name>
+		<entity-name>c2h5oh.jpa.Employee</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>70</entity-height>
+		<entity-height>206</entity-height>
 		<entity-X-Coordinate>50</entity-X-Coordinate>
-		<entity-Y-Coordinate>469</entity-Y-Coordinate>
+		<entity-Y-Coordinate>150</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>c2h5oh.jpa.User</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>186</entity-height>
+		<entity-X-Coordinate>299</entity-X-Coordinate>
+		<entity-Y-Coordinate>23</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>

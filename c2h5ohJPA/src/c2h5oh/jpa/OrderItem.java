@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import javax.persistence.Basic;
 import javax.persistence.ManyToOne;
 
-import c2h5oh.jpa.Article;
+import c2h5oh.jpa.Product;
 import c2h5oh.jpa.Order;
 
 @Entity
@@ -18,7 +18,7 @@ public class OrderItem {
 	@Basic(optional = false)
 	private Integer quantity;
 	@ManyToOne(optional = false)
-	private Article article;
+	private Product product;
 	@ManyToOne(optional = false)
 	private Order order;
 
@@ -38,12 +38,12 @@ public class OrderItem {
 		return quantity;
 	}
 
-	public Article getArticle() {
-	    return article;
+	public Product getProduct() {
+	    return product;
 	}
 
-	public void setArticle(Article param) {
-	    this.article = param;
+	public void setProduct(Product param) {
+	    this.product = param;
 	}
 
 	public Order getOrder() {
