@@ -1,8 +1,7 @@
-TODO: should remove this file from version control!!!
 ----------------------------------------------------------------
-Tue May 14 18:52:31 EEST 2013:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.3.0 - (1405108): instance a816c00e-013e-a3be-32fd-000006312ba8 
-on database directory C:\Users\krassi\c2h5ohdb  with class loader sun.misc.Launcher$AppClassLoader@4cfa88fb 
+Tue May 14 21:48:51 EEST 2013:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.3.0 - (1405108): instance a816c00e-013e-a45f-a3fb-00000631b430 
+on database directory C:\Users\krassi\c2h5ohdb  with class loader sun.misc.Launcher$AppClassLoader@7ad99f4a 
 Loaded from file:/C:/Users/krassi/workspace/libraries/db-derby-10.8.3.0-bin/db-derby-10.8.3.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.7.0_21-b11
