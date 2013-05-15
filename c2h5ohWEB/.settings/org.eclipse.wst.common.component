@@ -2,6 +2,9 @@
     <wb-module deploy-name="c2h5ohWEB">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="c2h5ohJPA.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/c2h5ohJPA/c2h5ohJPA">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="c2h5ohWEB"/>
         <property name="java-output-path" value="/c2h5ohWEB/build/classes"/>
     </wb-module>

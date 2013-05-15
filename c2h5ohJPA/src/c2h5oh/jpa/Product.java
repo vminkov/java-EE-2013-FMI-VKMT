@@ -10,7 +10,7 @@ import java.util.Collection;
 @Table(name = "T_PRODUCT")
 public class Product {
 
-	@Id
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	@OneToMany(mappedBy = "product")
 	private Collection<OrderItem> orderItem;

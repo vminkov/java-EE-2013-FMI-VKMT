@@ -1,11 +1,6 @@
 package c2h5oh.jpa;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.OneToOne;
-import org.eclipse.persistence.annotations.Mutable;
+import javax.persistence.*;
 
 import c2h5oh.jpa.Employee;
 
@@ -13,10 +8,9 @@ import c2h5oh.jpa.Employee;
 @Table(name = "T_USER")
 public class User {
 
-	@Id
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	@Basic(optional = false)
-	@Mutable(false)
 	private String username;
 	@Basic(optional = false)
 	private String password;

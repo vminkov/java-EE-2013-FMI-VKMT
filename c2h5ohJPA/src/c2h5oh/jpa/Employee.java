@@ -10,7 +10,7 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 @Inheritance(strategy = TABLE_PER_CLASS)
 public class Employee {
 
-	@Id
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	@OneToOne(mappedBy = "employee", optional = false)
 	private User user;

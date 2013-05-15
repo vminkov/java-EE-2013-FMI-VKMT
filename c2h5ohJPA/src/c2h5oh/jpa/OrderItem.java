@@ -1,10 +1,6 @@
 package c2h5oh.jpa;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Basic;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import c2h5oh.jpa.Product;
 import c2h5oh.jpa.Order;
@@ -13,7 +9,7 @@ import c2h5oh.jpa.Order;
 @Table(name = "T_ORDERITEM")
 public class OrderItem {
 
-	@Id
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	@Basic(optional = false)
 	private Integer quantity;

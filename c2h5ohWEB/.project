@@ -3,6 +3,7 @@
 	<name>c2h5ohWEB</name>
 	<comment></comment>
 	<projects>
+		<project>c2h5ohJPA</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

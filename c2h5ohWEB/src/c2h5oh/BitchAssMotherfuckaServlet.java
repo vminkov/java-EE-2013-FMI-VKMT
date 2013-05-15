@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
+import javax.ejb.EJB;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
@@ -11,6 +15,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
+
+import com.BananaBean;
 
 import c2h5oh.jpa.Director;
 
@@ -21,19 +33,19 @@ import c2h5oh.jpa.Director;
 public class BitchAssMotherfuckaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	@PersistenceContext
-	EntityManager manager;
+	//@PersistenceContext
+	//EntityManager manager;
 	
+	@EJB
+	BananaBean banana;
 	
+	//@Resource
+	//UserTransaction ut;
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	void shit() {
-		Logger logger = Logger.getLogger(FUCKME.class.getName());
-		logger.log(Level.ALL, "SHIT NIGGA");
-		Director me = new Director();
-		me.setAddress("na lunata");
-		me.setFirstName("pesaho");
-		logger.log(Level.ALL, "DAMN");
-		
-		manager.persist(me);
+		String shit = banana.getShit();
+		System.out.println(shit);
 	}
 	
     /**
@@ -48,7 +60,7 @@ public class BitchAssMotherfuckaServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		shit();
 	}
 
 	/**
