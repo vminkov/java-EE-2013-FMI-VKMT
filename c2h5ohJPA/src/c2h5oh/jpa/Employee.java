@@ -2,6 +2,7 @@ package c2h5oh.jpa;
 
 import javax.persistence.*;
 
+import c2h5oh.beans.roles.Role;
 import c2h5oh.jpa.User;
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
@@ -69,6 +70,10 @@ public class Employee {
 
 	public String getSalary() {
 		return salary;
+	}
+
+	public Role getRole() {
+		return null;
 	}
 
 }

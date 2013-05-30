@@ -2,6 +2,8 @@ package c2h5oh.jpa;
 
 import javax.persistence.*;
 
+import c2h5oh.beans.roles.Role;
+
 @Entity
 @Table(name = "T_DIRECTOR")
 public class Director extends Employee {
@@ -17,4 +19,8 @@ public class Director extends Employee {
 		return klatisikrakata;
 	}
 
+	@Override
+	public Role getRole() {
+		return Role.DIRECTOR;
+	}
 }
