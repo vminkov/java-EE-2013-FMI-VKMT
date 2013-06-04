@@ -9,4 +9,8 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <servlet-name>c2h5ohServlet</servlet-name>
+    <servlet-class>c2h5ohServlet</servlet-class>
+  </servlet>
 </web-app>
