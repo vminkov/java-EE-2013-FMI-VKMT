@@ -10,7 +10,8 @@ import java.util.Collection;
 @Table(name = "T_PRODUCT")
 public class Product {
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@OneToMany(mappedBy = "product")
 	private Collection<OrderItem> orderItem;
@@ -18,6 +19,9 @@ public class Product {
 	private String name;
 	@Basic
 	private String price;
+	@Basic
+	private Boolean isActive;
+
 	public long getId() {
 		return id;
 	}
@@ -48,5 +52,13 @@ public class Product {
 
 	public String getPrice() {
 		return price;
+	}
+
+	public void setIsActive(Boolean param) {
+		this.isActive = param;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
 	}
 }
