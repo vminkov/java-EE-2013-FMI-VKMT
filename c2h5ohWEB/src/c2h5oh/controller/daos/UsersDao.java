@@ -15,7 +15,7 @@ public class UsersDao extends GenericDaoImpl<User> {
 		super(User.class);
 	}
 	
-	//никой не е казал, че е ID username
+	// Gets the users by username
 	public List<User> getByUsername(String username) {
 		return this.filter("username", username);
 	}

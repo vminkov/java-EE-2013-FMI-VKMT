@@ -1,7 +1,6 @@
 package c2h5oh.controller.daos;
 
 import java.util.List;
-import java.util.Map;
 
 public interface GenericDao<T> {
     /**

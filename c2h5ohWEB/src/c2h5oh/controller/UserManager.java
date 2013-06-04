@@ -58,7 +58,10 @@ public class UserManager {
 			} else {
 				return user;
 			}
-		} catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+		//	Multi-catch parameters are not allowed for source level below 1.7
+		} catch (UnsupportedEncodingException e) {
+			throw new LoginException();
+		} catch (NoSuchAlgorithmException e) {
 			throw new LoginException();
 		}
 	}
@@ -119,8 +122,11 @@ public class UserManager {
 				this.usersDao.update(newUser);
 				return newUser;
 			}
-
-		} catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+		//	Multi-catch parameters are not allowed for source level below 1.7
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			throw new UserCreationException();
+		}catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			throw new UserCreationException();
 		}
@@ -171,7 +177,7 @@ public class UserManager {
 
 	public User updateUserInfo(User user) {
 		throw new RuntimeException();
-		//нямам време сега да го пиша, ако някой иска да си го напише
+		//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	}
 
 	private String getMD5Hash(String password) throws NoSuchAlgorithmException,
