@@ -1,7 +1,6 @@
 package c2h5oh.controller.daos;
 
 import java.util.List;
-import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +13,7 @@ import javax.persistence.criteria.Root;
 @Stateless
 public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
-    @PersistenceContext(unitName = "cointelligence")
+    @PersistenceContext(unitName = "c2h5oh")
     protected EntityManager em;
 
     private Class<T> type;
