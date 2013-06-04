@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import c2h5oh.jpa.OrderItem;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 @Entity
@@ -17,8 +18,8 @@ public class Product {
 	private Collection<OrderItem> orderItem;
 	@Basic
 	private String name;
-	@Basic
-	private String price;
+	@Column(precision=10, scale=2)
+	private BigDecimal price;
 	@Basic
 	private Boolean isActive;
 
@@ -46,11 +47,11 @@ public class Product {
 		return name;
 	}
 
-	public void setPrice(String param) {
+	public void setPrice(BigDecimal param) {
 		this.price = param;
 	}
 
-	public String getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 

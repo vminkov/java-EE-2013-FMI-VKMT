@@ -32,7 +32,8 @@
 </head>
 <body>
 
-<form name="create-order" action="order" method="POST">
+<form name="create-order" action="order" method="GET">
+	<input type="hidden" name="action" value="create">
 	<h2>Нова поръчка</h2>
 	<fieldset>
 		<p class="control-group form-inline">
@@ -46,6 +47,7 @@
 		</p>
 		<span class="add btn">Добави продукт</span>
 	</fieldset>
+	<br/>
 	<p>
 		<input type="submit" name="submit" value="Създай" class="btn btn-primary" />
 	</p>

@@ -23,8 +23,6 @@ public class OrderBean {
 	@PersistenceContext(unitName = "c2h5oh")
 	EntityManager manager;
 	
-	@SuppressWarnings("unchecked")
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Product> getProducts() {
 		manager.clear();
 		String queryString = "SELECT p FROM Product p WHERE p.isActive = true";
@@ -32,8 +30,8 @@ public class OrderBean {
 		return query.getResultList();
 	}
 
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void createOrder(Long[] productIds, Integer[] quantities) {
+//	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Order createOrder(Long[] productIds, Integer[] quantities) {
 		Order order = new Order();
 		order.setState(State.NEW);
 		order.setAcceptedTime(new Date());
@@ -52,5 +50,8 @@ public class OrderBean {
 		}
 		
 		manager.persist(order);
+		manager.flush();
+		manager.refresh(order);
+		return order;
 	}
 }
