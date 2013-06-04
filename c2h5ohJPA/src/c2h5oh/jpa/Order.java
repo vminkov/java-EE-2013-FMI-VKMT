@@ -16,7 +16,7 @@ import javax.persistence.Basic;
 @Table(name = "T_ORDER")
 public class Order {
 
-	@Id 
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	@OneToMany(mappedBy = "order")
 	private Collection<OrderItem> orderItem;
