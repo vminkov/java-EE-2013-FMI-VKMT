@@ -15,11 +15,14 @@ import javax.security.auth.login.LoginException;
 
 
 import c2h5oh.beans.roles.Role;
+import c2h5oh.controller.daos.EmployeesDao;
+import c2h5oh.controller.daos.GenericDaoImpl;
 import c2h5oh.controller.daos.UsersDao;
 import c2h5oh.controller.exceptions.NoSuchUserException;
 import c2h5oh.controller.exceptions.UserCreationException;
 import c2h5oh.controller.exceptions.UserExistsException;
 import c2h5oh.controller.exceptions.WrongPasswordException;
+import c2h5oh.jpa.Employee;
 import c2h5oh.jpa.User;
 
 @Stateless
@@ -28,6 +31,9 @@ public class UserManager {
 
 	@EJB
 	private UsersDao usersDao;
+
+	@EJB
+	private EmployeesDao emplDao;
 
 	/* (non-Javadoc)
 	 * @see c2h5oh.controller.IUserManager#removeUser(java.lang.Long, java.lang.String)
@@ -130,10 +136,11 @@ public class UserManager {
 				newUser.setUsername(username.toLowerCase());
 
 				newUser.setPasswordHash(getMD5Hash(password));
-
-				newUser.setEmployee(EmployeesFactory.get(role));
+				Employee empl = EmployeesFactory.get(role);
+				empl.setUser(newUser);
+				Employee saved = emplDao.update(empl);
 				
-
+				newUser.setEmployee(saved);
 				System.out.println("creating user " + newUser.getUsername());
 				this.usersDao.update(newUser);
 				return newUser;
@@ -207,7 +214,7 @@ public class UserManager {
 	 * @see c2h5oh.controller.IUserManager#updateUserInfo(c2h5oh.jpa.User)
 	 */
 	public User updateUserInfo(User user) {
-		throw new RuntimeException();
+		return this.usersDao.update(user);
 	}
 
 	private String getMD5Hash(String password) throws NoSuchAlgorithmException,

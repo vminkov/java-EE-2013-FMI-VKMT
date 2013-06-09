@@ -32,7 +32,9 @@ import c2h5oh.util.Constants;
 public class LoginServlet extends HttpServlet {
 	@EJB
 	private UserManager userManager;
-
+	
+	
+	
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -41,7 +43,6 @@ public class LoginServlet extends HttpServlet {
 			try {
 				User admin = userManager.createNewUser("admin", "tigretigre", Role.DIRECTOR);
 				admin.setEmail("boss@c2h5oh.bg");
-				userManager.updateUserInfo(admin);
 
 				System.out.println("Created ADMIN account with user/pass: "
 						+ "admin / tigretigre");
@@ -94,6 +95,7 @@ public class LoginServlet extends HttpServlet {
 					userInfo.setUsername(loginBean.getUsername());
 					userInfo.setName(loginBean.getEmployee().getFirstName());
 					userInfo.setEmail(loginBean.getEmail());
+					userInfo.setRole(loginBean.getEmployee().getRole());
 
 					HttpSession session = request.getSession();
 					session.setAttribute(Constants.USER_INFO_SESSION_ATTR_NAME,
@@ -101,7 +103,7 @@ public class LoginServlet extends HttpServlet {
 
 					response.addCookie(new Cookie(Constants.COOKIE_NAME,
 							loginBean.getPasswordHash()));
-					response.sendRedirect(Constants.MAIN_PAGE);
+					response.sendRedirect(request.getContextPath() + Constants.MAIN_PAGE);
 					return;
 				}
 			}
@@ -117,7 +119,7 @@ public class LoginServlet extends HttpServlet {
 		// works for forwarding only
 		request.setAttribute(Constants.MESSAGE_REQUEST_ATTR_NAME, message);
 
-		request.getRequestDispatcher("login.jsp").forward(request, response);
+		request.getRequestDispatcher(Constants.LOGIN_PAGE).forward(request, response);
 		// response.sendRedirect(this.getServletContext().getContextPath() +
 		// Constants.LOGIN_PAGE);
 	}

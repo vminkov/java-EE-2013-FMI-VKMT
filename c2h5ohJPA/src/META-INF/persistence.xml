@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="c2h5oh" transaction-type="JTA">
 		<jta-data-source>jdbc/c2h5oh</jta-data-source>
 		<class>c2h5oh.jpa.User</class>
@@ -12,7 +14,12 @@
 		<class>c2h5oh.jpa.Director</class>
 		<properties>
 			<property name="eclipselink.target-server" value="SunAS9" />
-			<property name="eclipselink.logging.level" value="FINEST" />
+			<property name="eclipselink.logging.level" value="FINEST" /><!-- 
+				<property name="eclipselink.target-database" value="DERBY"/> <property name="eclipselink.ddl-generation" 
+				value="drop-and-create-tables"/> <property name="eclipselink.jdbc.driver" 
+				value="org.apache.derby.jdbc.ClientDriver"/> <property name="eclipselink.jdbc.url" 
+				value="jdbc:derby://localhost:1527/C2H5OH;create=true"/> <property name="eclipselink.jdbc.user" 
+				value="user"/> <property name="eclipselink.jdbc.password" value="123"/> -->
 		</properties>
 	</persistence-unit>
 </persistence>

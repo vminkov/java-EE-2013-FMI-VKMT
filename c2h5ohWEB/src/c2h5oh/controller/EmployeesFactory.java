@@ -6,7 +6,6 @@ import c2h5oh.jpa.Director;
 import c2h5oh.jpa.Employee;
 import c2h5oh.jpa.Waiter;
 
-//HR отделът си мечтаят само за такова нещо
 public class EmployeesFactory {
 	public static Employee get(Role role){
 		
