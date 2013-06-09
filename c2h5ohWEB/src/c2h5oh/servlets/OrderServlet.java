@@ -74,17 +74,30 @@ public class OrderServlet extends HttpServlet {
 			Order order = acceptOrder(request, response);
 			request.setAttribute("order", order);
 			address = "/order/order-accept-sucess.jsp";
+		} else if ("pending-form".equals(action)) {
+			// Pending
+			User user = getSessionUser(request);
+			Bartender bartender = (Bartender) user.getEmployee();
+			request.setAttribute("bartender", bartender);
+			System.out.println("bartender id: " + bartender.getId());
+			List<Order> orders = bean.getAcceptedOrders(bartender);
+			request.setAttribute("orders", orders);
+			address = "/order/order-pending.jsp";
+		} else if ("pending".equals(action)) {
+			Order order = pendOrder(request, response);
+			request.setAttribute("order", order);
+			address = "/order/order-pending-success.jsp";
 		} else if ("complete-form".equals(action)) {
 			// Complete
 			User user = getSessionUser(request);
 			Waiter waiter = (Waiter) user.getEmployee();
-			List<Order> orders = bean.getIncompleteOrders(waiter);
+			List<Order> orders = bean.getPendingOrders(waiter);
 			request.setAttribute("orders", orders);
 			address = "/order/order-complete.jsp";
 		} else if ("complete".equals(action)) {
 			Order order = completeOrder(request, response);
 			request.setAttribute("order", order);
-			address = "/order/order-complete-sucess.jsp";
+			address = "/order/order-complete-success.jsp";
 		} else {
 			// Default
 			address = "index.jsp";
@@ -97,6 +110,13 @@ public class OrderServlet extends HttpServlet {
 	private User getSessionUser(HttpServletRequest request) {
 		UserInfoBean userInfo =  (UserInfoBean) request.getSession().getAttribute(Constants.USER_INFO_SESSION_ATTR_NAME);
 		return userManager.getUser(userInfo.getUsername());
+	}
+
+	private Order pendOrder(HttpServletRequest request,
+			HttpServletResponse response) {
+		String orderId = request.getParameter("orderId");
+		System.out.println("Pending order: " + orderId);
+		return bean.pendOrder(Long.parseLong(orderId));
 	}
 
 	/**

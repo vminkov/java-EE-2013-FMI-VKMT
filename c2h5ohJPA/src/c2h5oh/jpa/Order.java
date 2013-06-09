@@ -92,6 +92,6 @@ public class Order {
 	}
 
 	public static enum State {
-		NEW, ACCEPTED, COMPLETED, OVERDUE, LATE
+		NEW, ACCEPTED, COMPLETED, OVERDUE, PENDING
 	}
 }

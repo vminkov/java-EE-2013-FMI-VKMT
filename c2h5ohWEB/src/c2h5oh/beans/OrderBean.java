@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.LocalBean;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -68,53 +69,16 @@ public class OrderBean {
 		manager.refresh(order);
 		return order;
 	}
-	
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Bartender getBartender(User user) {
-		User theUser = manager.find(User.class, user.getId());
-		manager.refresh(theUser);
-		String queryString = "SELECT b FROM Bartender b WHERE b.id = :id";
-		
-		Query query = manager.createQuery(queryString);
-		query.setParameter("id", theUser.getId());
-
-		List<Bartender> bartenders = query.getResultList();
-		Bartender bartender = null;
-		if (bartenders != null && bartenders.size() > 0) {
-			bartender = bartenders.get(0);
-		}
-		return bartender;
-	}
-	
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<User> getUsers() {
-		String queryString = "SELECT u FROM User u";
-		Query query = manager.createQuery(queryString);
-		List<User> users = query.getResultList();
-		return users;
-	}
-
-	public User getUser(Long id) {
-		return manager.find(User.class, id);	
-	}
 
 	@SuppressWarnings("unchecked")
-	//@Schedule(second="*/5", minute="*", hour="*", persistent=false)
+	@Schedule(second="*/20", minute="*", hour="*", persistent=false)
 	public void markOverdueOrders() {
 		System.out.println("entering markOverdueOrders");
 		// update the state of all the orders which
 		Date now = new Date();
-		// update late orders
-		String lateQueryString = "SELECT o FROM Order o WHERE o.state = c2h5oh.jpa.Order$State.NEW OR o.state = c2h5oh.jpa.Order$State.ACCEPTED";
-		Query lateQuery = manager.createQuery(lateQueryString);
-		List<Order> lateOrders = lateQuery.getResultList();
-		for (Order order : lateOrders) {
-			Date orderTime = order.getAcceptedTime();
-			updateLate(now, order, orderTime);
-		}
 		
 		// update overdue orders
-		String overdueQueryString = "SELECT o FROM Order o WHERE o.state = c2h5oh.jpa.Order$State.LATE";
+		String overdueQueryString = "SELECT o FROM Order o WHERE o.state <> c2h5oh.jpa.Order$State.COMPLETED";
 		Query overdueQuery = manager.createQuery(overdueQueryString);
 		List<Order> overdueOrders = overdueQuery.getResultList();
 		for (Order order : overdueOrders) {
@@ -131,15 +95,22 @@ public class OrderBean {
 		return orders;
 	}
 	
+	public List<Order> getAcceptedOrders(Bartender bartender) {
+		String unacceptedQueryString = "SELECT o FROM Order o WHERE o.bartender = :bartender AND o.state = c2h5oh.jpa.Order$State.ACCEPTED";
+		Query query = manager.createQuery(unacceptedQueryString);
+		query.setParameter("bartender", bartender);
+		List<Order> orders = query.getResultList();
+		return orders;
+	}
+
 	/**
 	 * Returns a list of incomplete orders for a waiter
 	 * @return
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<Order> getIncompleteOrders(Waiter waiter) {
-		// TODO: Make unaccepted
-		String unacceptedQueryString = "SELECT o FROM Order o WHERE o.state = c2h5oh.jpa.Order$State.ACCEPTED AND o.waiter = :waiter";
-		Query query = manager.createQuery(unacceptedQueryString);
+	public List<Order> getPendingOrders(Waiter waiter) {
+		String pendingQueryString = "SELECT o FROM Order o WHERE o.state = c2h5oh.jpa.Order$State.PENDING AND o.waiter = :waiter";
+		Query query = manager.createQuery(pendingQueryString);
 		query.setParameter("waiter", waiter);
 		List<Order> orders = query.getResultList();
 		return orders;
@@ -154,10 +125,18 @@ public class OrderBean {
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Order acceptOrder(Long orderId, Date acceptedTime, Bartender bartender) {
+		Bartender bt = manager.find(Bartender.class, bartender.getId());
 		Order order = manager.find(Order.class, orderId);
 		order.setAcceptedTime(acceptedTime);
-		order.setBartender(bartender);
+		order.setBartender(bt);
 		order.setState(State.ACCEPTED);
+		manager.persist(order);
+		return order;
+	}
+	
+	public Order pendOrder(Long orderId) {
+		Order order = manager.find(Order.class, orderId);
+		order.setState(State.PENDING);
 		manager.persist(order);
 		return order;
 	}
@@ -173,17 +152,6 @@ public class OrderBean {
 		order.setState(State.COMPLETED);
 		manager.persist(order);
 		return order;
-	}
-
-	private void updateLate(Date now, Order order, Date orderTime) {
-		Calendar overdueOrderCalendar = Calendar.getInstance();
-		overdueOrderCalendar.setTime(orderTime);
-		overdueOrderCalendar.add(Calendar.MINUTE, LATE_MINUTES);
-		if (now.after(overdueOrderCalendar.getTime())) {
-			System.out.println("Marking order with id " + order.getId() + " as late.");
-			order.setState(State.LATE);
-			manager.persist(order);
-		}
 	}
 
 	private void updateOverdue(Date now, Order order, Date orderTime) {
