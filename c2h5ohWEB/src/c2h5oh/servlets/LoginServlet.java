@@ -84,6 +84,7 @@ public class LoginServlet extends HttpServlet {
 		System.out.println(username + " " + password + " " + roleString);
 		try {
 			Role role = Role.fromValue(roleString);
+			System.out.println(role.toString());
 
 			if (role != null && username != null && password != null
 					&& username.length() > 0 && password.length() > 0) {

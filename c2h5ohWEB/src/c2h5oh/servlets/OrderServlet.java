@@ -13,11 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import c2h5oh.beans.OrderBean;
+import c2h5oh.beans.UserInfoBean;
+import c2h5oh.controller.UserManager;
 import c2h5oh.jpa.Bartender;
 import c2h5oh.jpa.Order;
 import c2h5oh.jpa.Product;
 import c2h5oh.jpa.User;
 import c2h5oh.jpa.Waiter;
+import c2h5oh.util.Constants;
 
 /**
  * Servlet implementation class OrderServlet
@@ -29,6 +32,9 @@ public class OrderServlet extends HttpServlet {
 	@EJB
 	OrderBean bean;
 
+	@EJB
+	private UserManager userManager;
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -45,6 +51,7 @@ public class OrderServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 		String address;
+		Object attribute = request.getSession().getAttribute(Constants.USER_INFO_SESSION_ATTR_NAME);
 		
 		if ("create-form".equals(action)) {
 			// Create
@@ -88,8 +95,8 @@ public class OrderServlet extends HttpServlet {
 	}
 
 	private User getSessionUser(HttpServletRequest request) {
-		// TODO: Fix
-		return bean.getUsers().get(1);
+		UserInfoBean userInfo =  (UserInfoBean) request.getSession().getAttribute(Constants.USER_INFO_SESSION_ATTR_NAME);
+		return userManager.getUser(userInfo.getUsername());
 	}
 
 	/**
@@ -114,7 +121,9 @@ public class OrderServlet extends HttpServlet {
 			quantities[i] = Integer.parseInt(quantitiesString[i]);
 		}
 		
-		return bean.createOrder(productIds, quantities);
+		User user = getSessionUser(request);		
+		Waiter waiter = (Waiter) user.getEmployee();
+		return bean.createOrder(waiter, productIds, quantities);
 	}
 
 	private Order acceptOrder(HttpServletRequest request,
@@ -137,21 +146,5 @@ public class OrderServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Order received: " + request);
-		String[] productsString = request.getParameterValues("products");
-		String[] quantitiesString = request.getParameterValues("quantities");
-
-		Long[] productIds = new Long[productsString.length];
-		Integer[] quantities = new Integer[quantitiesString.length];
-
-		for (int i = 0; i < productsString.length; ++i) {
-			productIds[i] = Long.parseLong(productsString[i]);
-		}
-
-		for (int i = 0; i < quantitiesString.length; ++i) {
-			quantities[i] = Integer.parseInt(quantitiesString[i]);
-		}
-
-		bean.createOrder(productIds, quantities);
 	}
 }

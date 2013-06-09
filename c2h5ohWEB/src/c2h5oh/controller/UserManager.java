@@ -63,6 +63,7 @@ public class UserManager {
 		User user = users.get(0);
 
 		Role role = user.getEmployee().getRole();
+		System.out.println(role.toString());
 
 		if (role == null || !role.equals(loginType)) {
 			throw new SecurityException();
@@ -138,11 +139,11 @@ public class UserManager {
 				newUser.setPasswordHash(getMD5Hash(password));
 				Employee empl = EmployeesFactory.get(role);
 				empl.setUser(newUser);
-				Employee saved = emplDao.update(empl);
+				Employee saved = emplDao.create(empl);
 				
 				newUser.setEmployee(saved);
 				System.out.println("creating user " + newUser.getUsername());
-				this.usersDao.update(newUser);
+				this.usersDao.create(newUser);
 				return newUser;
 			}
 		//	Multi-catch parameters are not allowed for source level below 1.7

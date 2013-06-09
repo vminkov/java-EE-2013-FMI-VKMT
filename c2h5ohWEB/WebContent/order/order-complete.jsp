@@ -8,7 +8,7 @@
 
 <c:forEach var="order" items="${orders}">
 <form action="order" method="GET">
-	<input type="hidden" name="action" value="accept"/>
+	<input type="hidden" name="action" value="complete"/>
 	<input type="hidden" name="orderId" value="${order.id}"/>
 	<%@include file="order-view.jsp" %>
 	<input type="submit" class="btn" id="${order.id}" value="Завърши!"/>

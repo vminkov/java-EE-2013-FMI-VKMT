@@ -45,7 +45,7 @@ public class OrderBean {
 		return query.getResultList();
 	}
 
-	public Order createOrder(Long[] productIds, Integer[] quantities) {
+	public Order createOrder(Waiter waiter, Long[] productIds, Integer[] quantities) {
 		Order order = new Order();
 		order.setState(State.NEW);
 		order.setAcceptedTime(new Date());
@@ -62,7 +62,7 @@ public class OrderBean {
 			item.setQuantity(quantity);
 			manager.persist(item);
 		}
-		
+		order.setWaiter(waiter);
 		manager.persist(order);
 		manager.flush();
 		manager.refresh(order);
@@ -94,6 +94,10 @@ public class OrderBean {
 		return users;
 	}
 
+	public User getUser(Long id) {
+		return manager.find(User.class, id);	
+	}
+
 	@SuppressWarnings("unchecked")
 	//@Schedule(second="*/5", minute="*", hour="*", persistent=false)
 	public void markOverdueOrders() {
@@ -121,7 +125,6 @@ public class OrderBean {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Order> getNewOrders() {
-		// TODO: Make unaccepted
 		String unacceptedQueryString = "SELECT o FROM Order o WHERE o.state = c2h5oh.jpa.Order$State.NEW";
 		Query query = manager.createQuery(unacceptedQueryString);
 		List<Order> orders = query.getResultList();
@@ -141,7 +144,6 @@ public class OrderBean {
 		List<Order> orders = query.getResultList();
 		return orders;
 	}
-	
 
 	/**
 	 * Accepts an order
@@ -155,6 +157,7 @@ public class OrderBean {
 		Order order = manager.find(Order.class, orderId);
 		order.setAcceptedTime(acceptedTime);
 		order.setBartender(bartender);
+		order.setState(State.ACCEPTED);
 		manager.persist(order);
 		return order;
 	}
