@@ -1,8 +1,12 @@
 package c2h5oh.beans;
 
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
 import c2h5oh.beans.roles.Role;
 
-
+@LocalBean
+@Stateless
 public class UserInfoBean {
 	
 	private Long id;

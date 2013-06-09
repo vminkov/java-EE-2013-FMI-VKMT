@@ -1,6 +1,7 @@
 package c2h5oh.servlets;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -12,8 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import c2h5oh.beans.OrderBean;
+import c2h5oh.jpa.Bartender;
 import c2h5oh.jpa.Order;
 import c2h5oh.jpa.Product;
+import c2h5oh.jpa.User;
+import c2h5oh.jpa.Waiter;
 
 /**
  * Servlet implementation class OrderServlet
@@ -21,51 +25,91 @@ import c2h5oh.jpa.Product;
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+
 	@EJB
 	OrderBean bean;
-	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public OrderServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public OrderServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 		String address;
-		if ("create".equals(action)) {
+		
+		if ("create-form".equals(action)) {
+			// Create
+			List<Product> products = bean.getProducts();
+			request.setAttribute("products", products);
+			address = "/order/order-create.jsp";
+		} else if ("create".equals(action)) {
 			Order order = createOrder(request, response);
 			request.setAttribute("order", order);
-			address = "/order-success.jsp";
+			address = "/order/order-create-success.jsp";
+		} else if ("accept-form".equals(action)) {
+			// Accept
+			User user = getSessionUser(request);
+			Bartender bartender = (Bartender) user.getEmployee();
+			request.setAttribute("bartender", bartender);
+			List<Order> orders = bean.getNewOrders();
+			request.setAttribute("orders", orders);
+			address = "/order/order-accept.jsp";
+		} else if ("accept".equals(action)) {
+			Order order = acceptOrder(request, response);
+			request.setAttribute("order", order);
+			address = "/order/order-accept-sucess.jsp";
+		} else if ("complete-form".equals(action)) {
+			// Complete
+			User user = getSessionUser(request);
+			Waiter waiter = (Waiter) user.getEmployee();
+			List<Order> orders = bean.getIncompleteOrders(waiter);
+			request.setAttribute("orders", orders);
+			address = "/order/order-complete.jsp";
+		} else if ("complete".equals(action)) {
+			Order order = completeOrder(request, response);
+			request.setAttribute("order", order);
+			address = "/order/order-complete-sucess.jsp";
 		} else {
-			List<Product> products = bean.getProducts();
-			request.setAttribute("products", products);			
-			address = "/order-new.jsp";
+			// Default
+			address = "index.jsp";
 		}
-		
+
 		RequestDispatcher disp = request.getRequestDispatcher(address);
 		disp.forward(request, response);
 	}
 
+	private User getSessionUser(HttpServletRequest request) {
+		// TODO: Fix
+		return bean.getUsers().get(1);
+	}
+
+	/**
+	 * Creates an order
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	private Order createOrder(HttpServletRequest request,
 			HttpServletResponse response) {
-		System.out.println("Creating order");
 		String[] productsString = request.getParameterValues("products");
 		String[] quantitiesString = request.getParameterValues("quantities");
-		
+
 		Long[] productIds = new Long[productsString.length];
 		Integer[] quantities = new Integer[quantitiesString.length];
-		
+
 		for (int i = 0; i < productsString.length; ++i) {
 			productIds[i] = Long.parseLong(productsString[i]);
 		}
-		
+
 		for (int i = 0; i < quantitiesString.length; ++i) {
 			quantities[i] = Integer.parseInt(quantitiesString[i]);
 		}
@@ -73,25 +117,41 @@ public class OrderServlet extends HttpServlet {
 		return bean.createOrder(productIds, quantities);
 	}
 
+	private Order acceptOrder(HttpServletRequest request,
+			HttpServletResponse response) {
+		Long orderId = Long.parseLong(request.getParameter("orderId"));
+		Date acceptTime = new Date();
+		Bartender bartender = (Bartender) getSessionUser(request).getEmployee();
+		return bean.acceptOrder(orderId, acceptTime, bartender);
+	}
+
+	private Order completeOrder(HttpServletRequest request,
+			HttpServletResponse response) {
+		Long orderId = Long.parseLong(request.getParameter("orderId"));
+		return bean.completeOrder(orderId);
+	}
+
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Order received: " + request);
 		String[] productsString = request.getParameterValues("products");
 		String[] quantitiesString = request.getParameterValues("quantities");
-		
+
 		Long[] productIds = new Long[productsString.length];
 		Integer[] quantities = new Integer[quantitiesString.length];
-		
+
 		for (int i = 0; i < productsString.length; ++i) {
 			productIds[i] = Long.parseLong(productsString[i]);
 		}
-		
+
 		for (int i = 0; i < quantitiesString.length; ++i) {
 			quantities[i] = Integer.parseInt(quantitiesString[i]);
 		}
-		
+
 		bean.createOrder(productIds, quantities);
 	}
 }
