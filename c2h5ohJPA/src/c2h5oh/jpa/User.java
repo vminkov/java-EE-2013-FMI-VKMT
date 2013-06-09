@@ -13,7 +13,7 @@ public class User {
 	@Basic(optional = false)
 	private String username;
 	@Basic(optional = false)
-	private String password;
+	private String passwordHash;
 	@OneToOne
 	private Employee employee;
 	@Basic
@@ -34,12 +34,12 @@ public class User {
 		return username;
 	}
 
-	public void setPassword(String param) {
-		this.password = param;
+	public void setPasswordHash(String param) {
+		this.passwordHash = param;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getPasswordHash() {
+		return passwordHash;
 	}
 
 	public Employee getEmployee() {

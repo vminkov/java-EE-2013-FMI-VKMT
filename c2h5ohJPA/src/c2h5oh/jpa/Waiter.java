@@ -2,6 +2,7 @@ package c2h5oh.jpa;
 
 import javax.persistence.*;
 
+import c2h5oh.beans.roles.Role;
 import c2h5oh.jpa.Order;
 
 import java.util.Collection;
@@ -14,11 +15,15 @@ public class Waiter extends Employee {
 	private Collection<Order> acceptedOrders;
 
 	public Collection<Order> getAcceptedOrders() {
-	    return acceptedOrders;
+		return acceptedOrders;
 	}
 
 	public void setAcceptedOrders(Collection<Order> param) {
-	    this.acceptedOrders = param;
+		this.acceptedOrders = param;
 	}
 
+	@Override
+	public Role getRole() {
+		return Role.WAITER;
+	}
 }

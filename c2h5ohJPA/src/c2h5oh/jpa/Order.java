@@ -1,5 +1,6 @@
 package c2h5oh.jpa;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 
@@ -16,7 +17,7 @@ import javax.persistence.Basic;
 @Table(name = "T_ORDER")
 public class Order {
 
-	@Id 
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	@OneToMany(mappedBy = "order")
 	private Collection<OrderItem> orderItem;
@@ -77,8 +78,20 @@ public class Order {
 	public void setBartender(Bartender param) {
 		this.bartender = param;
 	}
+	
+	public BigDecimal getTotalPrice() {
+		BigDecimal totalPrice = BigDecimal.ZERO;
+		System.out.println("items: " + orderItem.size());
+		for (OrderItem item : orderItem) {
+			Product product = item.getProduct();
+			BigDecimal itemPrice = product.getPrice().multiply(
+					BigDecimal.valueOf(item.getQuantity()));
+			totalPrice = totalPrice.add(itemPrice);
+		}
+		return totalPrice;
+	}
 
 	public static enum State {
-		NEW, ACCEPTED, COMPLETED, OVERDUE
+		NEW, ACCEPTED, COMPLETED, OVERDUE, LATE
 	}
 }
