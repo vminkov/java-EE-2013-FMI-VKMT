@@ -1,6 +1,7 @@
 package c2h5oh.controller.daos;
 
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,11 +25,12 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
     @Override
     public long countAll() {
- 
+
         final StringBuffer queryString = new StringBuffer(
                 "SELECT count(o) from ");
 
         queryString.append(type.getSimpleName()).append(" o ");
+       // queryString.append(this.getQueryClauses(params, null));
 
         final Query query = this.em.createQuery(queryString.toString());
 
@@ -59,10 +61,15 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
     
     @Override
     public List<T> getAll() {
-		Query q = em.createQuery("SELECT t from " + type.getName() + " as t");
+		Query q = em.createQuery("SELECT t from " + type.getSimpleName() + " as t");
 		
 		
-		return (List<T>) q.getResultList();
+		List<T> resultList = (List<T>) q.getResultList();
+		for(T t : resultList){
+			this.em.detach(t);
+		}
+		
+		return resultList;
     }
     
     @Override

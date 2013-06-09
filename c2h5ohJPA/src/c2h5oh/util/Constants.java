@@ -1,4 +1,4 @@
-package c2h5oh.controller;
+package c2h5oh.util;
 
 public class Constants {
 
@@ -11,4 +11,5 @@ public class Constants {
 	public static final String MESSAGE_REQUEST_ATTR_NAME = "message";
 	public static final String LOGIN_PAGE = "login.jsp";
 
+	
 }

@@ -65,7 +65,7 @@ public class OrderBean {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Schedule(second="*/5", minute="*", hour="*")
+//	@Schedule(second="*/5", minute="*", hour="*")
 	public void markOverdueOrders() {
 		System.out.println("entering markOverdueOrders");
 		// update the state of all the orders which

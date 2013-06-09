@@ -7,7 +7,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import javax.resource.spi.SecurityException;
 import javax.security.auth.login.LoginException;
 
@@ -20,16 +22,23 @@ import c2h5oh.controller.exceptions.UserExistsException;
 import c2h5oh.controller.exceptions.WrongPasswordException;
 import c2h5oh.jpa.User;
 
-@Singleton
+@Stateless
+@LocalBean
 public class UserManager {
 
 	@EJB
 	private UsersDao usersDao;
 
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#removeUser(java.lang.Long, java.lang.String)
+	 */
 	public void removeUser(Long userId, String comment) {
 		usersDao.delete(userId);
 	}
 
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#login(java.lang.String, java.lang.String, c2h5oh.beans.roles.Role)
+	 */
 	public User login(String username, String password, Role loginType)
 			throws SecurityException, WrongPasswordException,
 			NoSuchUserException, LoginException {
@@ -40,6 +49,7 @@ public class UserManager {
 		final String userSearch = username.toLowerCase();
 
 		List<User> users = this.usersDao.getByUsername(userSearch);
+		System.out.println(users);
 		if (users.size() != 1) {
 			throw new NoSuchUserException();
 		}
@@ -66,6 +76,9 @@ public class UserManager {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#loginWithCookie(java.lang.String, java.lang.String, c2h5oh.beans.roles.Role)
+	 */
 	public User loginWithCookie(String username, String passwordHash,
 			Role loginType) throws WrongPasswordException, SecurityException,
 			NoSuchUserException {
@@ -94,6 +107,9 @@ public class UserManager {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#createNewUser(java.lang.String, java.lang.String, c2h5oh.beans.roles.Role)
+	 */
 	public User createNewUser(String username, String password, Role role)
 			throws UserExistsException, UserCreationException {
 		if (username == null || password == null)
@@ -132,6 +148,9 @@ public class UserManager {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#isDirector(java.lang.String)
+	 */
 	public boolean isDirector(String username) {
 		if (username == null)
 			throw new InvalidParameterException("the username is null");
@@ -144,6 +163,9 @@ public class UserManager {
 		return user.getEmployee().getRole().equals(Role.DIRECTOR);
 	}
 
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#isBartender(java.lang.String)
+	 */
 	public boolean isBartender(String username) {
 		if (username == null)
 			throw new InvalidParameterException("the username is null");
@@ -156,6 +178,9 @@ public class UserManager {
 		return user.getEmployee().getRole().equals(Role.BARTENDER);
 	}
 
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#isWaiter(java.lang.String)
+	 */
 	public boolean isWaiter(String username) {
 		if (username == null)
 			throw new InvalidParameterException("the username is null");
@@ -168,6 +193,9 @@ public class UserManager {
 		return user.getEmployee().getRole().equals(Role.WAITER);
 	}
 
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#getUser(java.lang.String)
+	 */
 	public User getUser(String username) {
 		if (username == null)
 			throw new InvalidParameterException("username is not valid");
@@ -175,9 +203,11 @@ public class UserManager {
 		return this.usersDao.getByUsername(username.toLowerCase()).get(0);
 	}
 
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#updateUserInfo(c2h5oh.jpa.User)
+	 */
 	public User updateUserInfo(User user) {
 		throw new RuntimeException();
-		//����� ����� ���� �� �� ����, ��� ����� ���� �� �� �� ������
 	}
 
 	private String getMD5Hash(String password) throws NoSuchAlgorithmException,
@@ -198,10 +228,16 @@ public class UserManager {
 		return hexString.toString();
 	}
 
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#getAllUsers()
+	 */
 	public List<User> getAllUsers() {
 		return this.usersDao.getAll();
 	}
 	
+	/* (non-Javadoc)
+	 * @see c2h5oh.controller.IUserManager#getAllUsersCount()
+	 */
 	public long getAllUsersCount() {
 		return this.usersDao.countAll();
 	}
