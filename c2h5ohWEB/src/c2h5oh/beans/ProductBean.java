@@ -1,5 +1,6 @@
-package com;
+package c2h5oh.beans;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -13,14 +14,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import c2h5oh.FUCKME;
 import c2h5oh.Statements;
 import c2h5oh.jpa.Product;
 
 @Stateless
 @LocalBean
 public class ProductBean {
-
+	static final Logger LOGGER = Logger.getLogger(ProductBean.class.getName());
 	public ProductBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -32,11 +32,11 @@ public class ProductBean {
 	// and JSFs
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Product> listProducts() {
-		Logger logger = Logger.getLogger(FUCKME.class.getName());
-		logger.log(Level.ALL, "PRODUCT LIST");
+		
+		LOGGER.log(Level.ALL, "PRODUCT LIST");
 
 		List<Product> productList = new ArrayList<Product>();
-		TypedQuery<Product> q = em.createQuery(Statements.GET_PRODUCTS,
+		TypedQuery<Product> q = em.createQuery(Statements.GET_ACTIVE_PRODUCTS,
 				Product.class);
 
 		productList = q.getResultList();
@@ -46,13 +46,13 @@ public class ProductBean {
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Product newProduct(String name, String price) {
-		Logger logger = Logger.getLogger(FUCKME.class.getName());
-		logger.log(Level.ALL, "NEW PRODUCT");
+		
+		LOGGER.log(Level.ALL, "NEW PRODUCT");
 		
 		Product product = new Product();
 		product.setName(name);
-		product.setPrice(price);
-//		product.setStatus(status);
+		product.setPrice(new BigDecimal(price));
+		product.setIsActive(true);
 		em.persist(product);
 		return product;
 
@@ -61,24 +61,25 @@ public class ProductBean {
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Product update(Product product) {
-		Logger logger = Logger.getLogger(FUCKME.class.getName());
-		logger.log(Level.ALL, "Update PRODUCT");
+		
+		LOGGER.log(Level.ALL, "Update PRODUCT");
 		
 		return em.merge(product);
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void remove(Long id) {
-		Logger logger = Logger.getLogger(FUCKME.class.getName());
-		logger.log(Level.ALL, "Remove PRODUCT");
+		
+		LOGGER.log(Level.ALL, "Remove PRODUCT");
 		Product product = getProduct(id);
-		em.remove(product);
+		product.setIsActive(false);
+		em.merge(product);
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Product getProduct(Long id) {
-		Logger logger = Logger.getLogger(FUCKME.class.getName());
-		logger.log(Level.ALL, "GET PRODUCT");
+		
+		LOGGER.log(Level.ALL, "GET PRODUCT");
 		
 		return em.find(Product.class, id);
 	}

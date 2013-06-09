@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import c2h5oh.beans.ProductBean;
 import c2h5oh.jpa.Product;
 
-import com.ProductBean;
 
 /**
  * Servlet implementation class MyServlet
