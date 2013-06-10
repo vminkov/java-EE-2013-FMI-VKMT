@@ -41,7 +41,7 @@ public class User {
 	public String getPasswordHash() {
 		return passwordHash;
 	}
-
+ 
 	public Employee getEmployee() {
 		return employee;
 	}

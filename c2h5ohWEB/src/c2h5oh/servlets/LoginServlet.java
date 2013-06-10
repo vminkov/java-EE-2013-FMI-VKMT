@@ -43,6 +43,7 @@ public class LoginServlet extends HttpServlet {
 			try {
 				User admin = userManager.createNewUser("admin", "tigretigre", Role.DIRECTOR);
 				admin.setEmail("boss@c2h5oh.bg");
+				userManager.updateUserInfo(admin);
 
 				System.out.println("Created ADMIN account with user/pass: "
 						+ "admin / tigretigre");
@@ -83,12 +84,9 @@ public class LoginServlet extends HttpServlet {
 				.getParameter(Constants.ROLE_REQUEST_PARAM_NAME);
 		System.out.println(username + " " + password + " " + roleString);
 		try {
-			Role role = Role.fromValue(roleString);
-			System.out.println(role.toString());
-
-			if (role != null && username != null && password != null
+			if (username != null && password != null
 					&& username.length() > 0 && password.length() > 0) {
-				User loginBean = userManager.login(username, password, role);
+				User loginBean = userManager.login(username, password);
 				System.out.println(loginBean);
 				if (loginBean != null) {
 					// successful login
@@ -97,6 +95,7 @@ public class LoginServlet extends HttpServlet {
 					userInfo.setName(loginBean.getEmployee().getFirstName());
 					userInfo.setEmail(loginBean.getEmail());
 					userInfo.setRole(loginBean.getEmployee().getRole());
+					userInfo.setPasswordHash(loginBean.getPasswordHash());
 
 					HttpSession session = request.getSession();
 					session.setAttribute(Constants.USER_INFO_SESSION_ATTR_NAME,
@@ -112,8 +111,6 @@ public class LoginServlet extends HttpServlet {
 			message = "Wrong username / password!";
 		} catch (NoSuchUserException e) {
 			message = "Wrong username / password!";
-		} catch (javax.resource.spi.SecurityException e) {
-			message = "You are not allowed to do this!";
 		} catch (LoginException e) {
 			message = "Server error!";
 		}

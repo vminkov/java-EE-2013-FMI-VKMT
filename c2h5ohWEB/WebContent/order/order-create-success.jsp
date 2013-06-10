@@ -3,6 +3,20 @@
 <title>Поръчки</title>
 </head>
 <body>
-<h2>Поръчка с номер ${order.id} на цена ${order.totalPrice} лв. е създадена успешно.</h2>
+	<div id="enterForm" class="modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="false">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="false">×</button>
+			<h3 id="H1">Нова поръчка</h3>
+		</div>
+		<div class="modal-body">
+			<h2>Поръчка с номер ${order.id} на цена ${order.totalPrice} лв.
+				е създадена успешно.</h2>
+		</div>
+		<div class="modal-footer">
+			<a href="index.jsp"><button class="btn">Начало</button></a>
+		</div>
+	</div>
 </body>
 </html>

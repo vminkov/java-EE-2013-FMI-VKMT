@@ -4,14 +4,17 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.*;
-
-import javax.persistence.ManyToOne;
-
-import c2h5oh.jpa.Bartender;
-import c2h5oh.jpa.Waiter;
-
 import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "T_ORDER")

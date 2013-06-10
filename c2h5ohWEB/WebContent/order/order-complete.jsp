@@ -1,21 +1,32 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@include file="../header.jsp" %>
+<%@include file="../header.jsp"%>
 <title>Поръчки</title>
 </head>
 <body>
-<h1>Завършване на поръчка</h1>
-<h2>Незавършени поръчки:</h2>
+	<div id="enterForm" class="modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="false">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="false">×</button>
+			<h3 id="H1">Завършване на поръчка</h3>
+		</div>
+		<div class="modal-body">
+			<form action="order" method="GET">
 
-<c:forEach var="order" items="${orders}">
-<form action="order" method="GET">
-	<input type="hidden" name="action" value="complete"/>
-	<input type="hidden" name="orderId" value="${order.id}"/>
-	<%@include file="order-view.jsp" %>
-	<input type="submit" class="btn" id="${order.id}" value="Завърши!"/>
-</form>
-</c:forEach>
+				<input type="hidden" name="action" value="complete" />
 
-<%@include file="../footer.jsp" %>
+				<h2>Незавършени поръчки:</h2>
 
+				<c:forEach var="order" items="${orders}">
+					<input type="hidden" name="orderId" value="${order.id}" />
+					<%@include file="order-view.jsp"%>
+					<input type="submit" class="btn" id="${order.id}" value="Завърши!" />
+				</c:forEach>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<a href="index.jsp"><button class="btn">Начало</button></a>
+		</div>
+	</div>
 </body>
 </html>

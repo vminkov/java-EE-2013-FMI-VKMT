@@ -13,6 +13,7 @@ public class Constants {
 	public static final String LOGIN_PAGE = "/login.jsp";
 	public static final String ALL_USERS_PAGE = "/listUsers.jsp";
 	public static final String ALL_USERS_REQUEST_ATTRIBUTE = "allUsers";
+	public static final String AUTHENTICATION_FILTER_EXCLUDE_URI_REGEX_PARAM_NAME = "exclude-uri-regex";
 
 	
 }

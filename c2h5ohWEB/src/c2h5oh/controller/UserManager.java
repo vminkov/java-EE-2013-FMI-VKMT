@@ -13,7 +13,6 @@ import javax.ejb.Stateless;
 import javax.resource.spi.SecurityException;
 import javax.security.auth.login.LoginException;
 
-
 import c2h5oh.beans.roles.Role;
 import c2h5oh.controller.daos.EmployeesDao;
 import c2h5oh.controller.daos.GenericDaoImpl;
@@ -35,19 +34,24 @@ public class UserManager {
 	@EJB
 	private EmployeesDao emplDao;
 
-	/* (non-Javadoc)
-	 * @see c2h5oh.controller.IUserManager#removeUser(java.lang.Long, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see c2h5oh.controller.IUserManager#removeUser(java.lang.Long,
+	 * java.lang.String)
 	 */
 	public void removeUser(Long userId, String comment) {
 		usersDao.delete(userId);
 	}
 
-	/* (non-Javadoc)
-	 * @see c2h5oh.controller.IUserManager#login(java.lang.String, java.lang.String, c2h5oh.beans.roles.Role)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see c2h5oh.controller.IUserManager#login(java.lang.String,
+	 * java.lang.String, c2h5oh.beans.roles.Role)
 	 */
-	public User login(String username, String password, Role loginType)
-			throws SecurityException, WrongPasswordException,
-			NoSuchUserException, LoginException {
+	public User login(String username, String password)
+			throws WrongPasswordException, NoSuchUserException, LoginException {
 		if (username == null || password == null)
 			throw new InvalidParameterException("username: " + username
 					+ " password: " + password + " are not valid");
@@ -65,17 +69,13 @@ public class UserManager {
 		Role role = user.getEmployee().getRole();
 		System.out.println(role.toString());
 
-		if (role == null || !role.equals(loginType)) {
-			throw new SecurityException();
-		}
-
 		try {
 			if (!user.getPasswordHash().equals(getMD5Hash(password))) {
 				throw new WrongPasswordException();
 			} else {
 				return user;
 			}
-		//	Multi-catch parameters are not allowed for source level below 1.7
+			// Multi-catch parameters are not allowed for source level below 1.7
 		} catch (UnsupportedEncodingException e) {
 			throw new LoginException();
 		} catch (NoSuchAlgorithmException e) {
@@ -83,8 +83,11 @@ public class UserManager {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see c2h5oh.controller.IUserManager#loginWithCookie(java.lang.String, java.lang.String, c2h5oh.beans.roles.Role)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see c2h5oh.controller.IUserManager#loginWithCookie(java.lang.String,
+	 * java.lang.String, c2h5oh.beans.roles.Role)
 	 */
 	public User loginWithCookie(String username, String passwordHash,
 			Role loginType) throws WrongPasswordException, SecurityException,
@@ -114,8 +117,11 @@ public class UserManager {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see c2h5oh.controller.IUserManager#createNewUser(java.lang.String, java.lang.String, c2h5oh.beans.roles.Role)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see c2h5oh.controller.IUserManager#createNewUser(java.lang.String,
+	 * java.lang.String, c2h5oh.beans.roles.Role)
 	 */
 	public User createNewUser(String username, String password, Role role)
 			throws UserExistsException, UserCreationException {
@@ -126,12 +132,11 @@ public class UserManager {
 		final String userSearch = username.toLowerCase();
 
 		List<User> users = this.usersDao.getByUsername(userSearch);
-		
+
 		try {
 			if (users.size() > 0) {
-					System.out.println("the user: " + username
-							+ " already exist");
-					throw new UserExistsException();
+				System.out.println("the user: " + username + " already exist");
+				throw new UserExistsException();
 			} else {
 				User newUser = new User();
 				newUser.setUsername(username.toLowerCase());
@@ -140,23 +145,25 @@ public class UserManager {
 				Employee empl = EmployeesFactory.get(role);
 				empl.setUser(newUser);
 				Employee saved = emplDao.create(empl);
-				
+
 				newUser.setEmployee(saved);
 				System.out.println("creating user " + newUser.getUsername());
 				this.usersDao.create(newUser);
 				return newUser;
 			}
-		//	Multi-catch parameters are not allowed for source level below 1.7
+			// Multi-catch parameters are not allowed for source level below 1.7
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			throw new UserCreationException();
-		}catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			throw new UserCreationException();
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see c2h5oh.controller.IUserManager#isDirector(java.lang.String)
 	 */
 	public boolean isDirector(String username) {
@@ -171,7 +178,9 @@ public class UserManager {
 		return user.getEmployee().getRole().equals(Role.DIRECTOR);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see c2h5oh.controller.IUserManager#isBartender(java.lang.String)
 	 */
 	public boolean isBartender(String username) {
@@ -186,7 +195,9 @@ public class UserManager {
 		return user.getEmployee().getRole().equals(Role.BARTENDER);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see c2h5oh.controller.IUserManager#isWaiter(java.lang.String)
 	 */
 	public boolean isWaiter(String username) {
@@ -201,7 +212,9 @@ public class UserManager {
 		return user.getEmployee().getRole().equals(Role.WAITER);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see c2h5oh.controller.IUserManager#getUser(java.lang.String)
 	 */
 	public User getUser(String username) {
@@ -211,7 +224,9 @@ public class UserManager {
 		return this.usersDao.getByUsername(username.toLowerCase()).get(0);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see c2h5oh.controller.IUserManager#updateUserInfo(c2h5oh.jpa.User)
 	 */
 	public User updateUserInfo(User user) {
@@ -236,14 +251,18 @@ public class UserManager {
 		return hexString.toString();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see c2h5oh.controller.IUserManager#getAllUsers()
 	 */
 	public List<User> getAllUsers() {
 		return this.usersDao.getAll();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see c2h5oh.controller.IUserManager#getAllUsersCount()
 	 */
 	public long getAllUsersCount() {

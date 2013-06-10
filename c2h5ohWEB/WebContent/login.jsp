@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Логин</title>
 <link
 	href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
 	rel="stylesheet">
@@ -78,11 +78,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<label>Роля: </label><select name="role">
-					<option value="<%=Role.WAITER.toString()%>"><%=Role.WAITER.toString()%></option>
-					<option value="<%=Role.DIRECTOR.toString()%>"><%=Role.DIRECTOR.toString()%></option>
-					<option value="<%=Role.BARTENDER.toString()%>"><%=Role.BARTENDER.toString()%></option>
-				</select> <input type="submit" class="btn btn-primary" value="Влез!" />
+				<input type="submit" class="btn btn-primary" value="Влез!" />
 			</div>
 		</form>
 	</div>

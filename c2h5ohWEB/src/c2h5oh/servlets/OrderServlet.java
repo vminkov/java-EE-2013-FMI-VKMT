@@ -49,6 +49,7 @@ public class OrderServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 		String address;
 		Object attribute = request.getSession().getAttribute(Constants.USER_INFO_SESSION_ATTR_NAME);

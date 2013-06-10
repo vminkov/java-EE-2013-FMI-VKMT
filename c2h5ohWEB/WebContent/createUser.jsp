@@ -6,6 +6,13 @@
 <html>
 <head>
 <title>Create User</title>
+
+<link
+	href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+	rel="stylesheet">
+<script
+	src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
 	<%
@@ -15,34 +22,53 @@
 	<%
 		if (user != null && user.getRole().equals(Role.DIRECTOR)) {
 	%>
-	<%=user.getRole().toString()%>
-
-	<form method="post" action="CreateUserServlet">
-		<label>Потр. име: </label><input type="text" name="username" /> <br>
-		<label>Парола: </label><input type="password" name="password" /> <br>
-		<label>Имейл: </label><input type="text" name="email" /> <br> <label>Роля:
-		</label><select name="role">
-			<option value="<%=Role.WAITER.toString()%>"><%=Role.WAITER.toString()%></option>
-			<option value="<%=Role.DIRECTOR.toString()%>"><%=Role.DIRECTOR.toString()%></option>
-			<option value="<%=Role.BARTENDER.toString()%>"><%=Role.BARTENDER.toString()%></option>
-		</select>
-		<input type="submit" value="Създай!"/>
-	</form>
+	<div id="enterForm" class="modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="false">
+		<form class="form-horizontal" method="post" action="CreateUserServlet">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="false">×</button>
+				<h3 id="H1">Създай потребител!</h3>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<label>Потр. име: </label><input type="text" name="username" />
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<label>Парола: </label><input type="password" name="password" />
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<label>Имейл: </label><input type="text" name="email" />
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<label>Роля:</label> <select name="role">
+						<option value="<%=Role.WAITER.toString()%>">Сервитьор</option>
+						<option value="<%=Role.DIRECTOR.toString()%>">Директор</option>
+						<option value="<%=Role.BARTENDER.toString()%>">Барман</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<input class="btn btn-primary" type="submit" value="Създай!" />
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+				<a href="index.jsp"><button class="btn" >Начало</button></a>
+			</div>
+		</form>
+	</div>
 	<%
 		} else {
 	%>
 	<h1>Не можеш да създаваш нови потребители !</h1>
-	<%
-		if (user != null) {
-	%>
-	<%=user.getRole()%>
-	<%
-		} else {
-	%>
-	user is null
-	<%
-		}
-	%>
 	<%
 		}
 	%>

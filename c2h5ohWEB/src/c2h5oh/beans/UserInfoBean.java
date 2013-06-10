@@ -13,6 +13,14 @@ public class UserInfoBean {
 	protected String username;
 	protected String name;
 	protected String email;
+	protected String passwordHash;
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
 	protected Role role;
 	
 	public UserInfoBean() {

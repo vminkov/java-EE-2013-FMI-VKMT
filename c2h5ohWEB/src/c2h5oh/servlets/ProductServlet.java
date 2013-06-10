@@ -35,6 +35,7 @@ public class ProductServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 
 		List<Product> productList = productBean.listProducts();
 		System.out.println("GPEL productList size: " + productList.size());
@@ -52,6 +53,7 @@ public class ProductServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");

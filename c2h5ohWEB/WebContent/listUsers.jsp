@@ -10,46 +10,68 @@
 <html>
 <head>
 <title>Прегледай потребителите</title>
+<link
+	href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+	rel="stylesheet">
+<script
+	src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
 	<%
-		List<User> users = (List<User>) request.getAttribute(Constants.ALL_USERS_REQUEST_ATTRIBUTE);
-		
+		List<User> users = (List<User>) request
+				.getAttribute(Constants.ALL_USERS_REQUEST_ATTRIBUTE);
+
 		UserInfoBean user = (UserInfoBean) session
 				.getAttribute(Constants.USER_INFO_SESSION_ATTR_NAME);
 	%>
 	<%
 		if (user != null && user.getRole().equals(Role.DIRECTOR)) {
 	%>
-	<table>
-		<tr>
-			<td>
-				Потр. име
-			</td>
-			<td>
-				Роля
-			</td>
-			<td>
-				Имейл
-			</td>
-		</tr>
-		<% for(User forUser : users){ %>
-		<tr>
-			<td>
-			<%=forUser.getUsername() %>
-			</td>
-			<td>
-			<%=forUser.getEmployee().getRole() %>
-			</td>
-			<td>
-			<%=forUser.getEmail() %>
-			</td>
-		</tr>
-		<%} %>
-	</table>
-	<%
-		}
-	%>
+	<div id="enterForm" class="modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="false">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="false">×</button>
+			<h3 id="H1">Прегледай потребителите</h3>
+		</div>
+		<div class="modal-body">
+			<div class="control-group">
+				<div class="controls">
 
+					<table class="table table-bordered">
+						<tr>
+							<td>Потр. име</td>
+							<td>Роля</td>
+							<td>Имейл</td>
+						</tr>
+						<%
+							for (User forUser : users) {
+						%>
+						<tr>
+							<td><%=forUser.getUsername()%></td>
+							<td><%=forUser.getEmployee().getRole()%></td>
+							<td><%=forUser.getEmail()%></td>
+						</tr>
+						<%
+							}
+						%>
+					</table>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<a href="index.jsp"><button class="btn">Начало</button></a>
+			</div>
+		</div>
+
+		<%
+			} else {
+		%>
+		<h1>Не можеш да преглеждаш потребителите!</h1>
+		<%
+			}
+		%>
+	
 </body>
 </html>

@@ -60,7 +60,8 @@ public class CreateUserServlet extends HttpServlet {
 		//validate
 		
 		try {
-			User created = this.userManager.createNewUser(username, password, Role.valueOf(role));
+			this.userManager.createNewUser(username, password, Role.valueOf(role));
+			User created = this.userManager.getUser(username);
 			created.setEmail(email);
 			this.userManager.updateUserInfo(created);
 		} catch (UserExistsException e) {
