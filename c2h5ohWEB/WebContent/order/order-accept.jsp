@@ -26,5 +26,6 @@
 		<div class="modal-footer">
 			<a href="index.jsp"><button class="btn">Начало</button></a>
 		</div>
+	</div>
 </body>
 </html>

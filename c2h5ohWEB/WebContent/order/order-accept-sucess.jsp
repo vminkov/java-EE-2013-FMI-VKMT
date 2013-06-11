@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@include file="../header.jsp" %>
+<%@include file="../header.jsp"%>
 <title>Поръчки</title>
 </head>
 <body>
@@ -17,5 +17,6 @@
 		<div class="modal-footer">
 			<a href="index.jsp"><button class="btn">Начало</button></a>
 		</div>
+	</div>
 </body>
 </html>

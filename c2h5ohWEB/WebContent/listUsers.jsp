@@ -44,6 +44,7 @@
 							<td>Потр. име</td>
 							<td>Роля</td>
 							<td>Имейл</td>
+							<td>Заплата</td>
 						</tr>
 						<%
 							for (User forUser : users) {
@@ -52,6 +53,7 @@
 							<td><%=forUser.getUsername()%></td>
 							<td><%=forUser.getEmployee().getRole()%></td>
 							<td><%=forUser.getEmail()%></td>
+							<td><%=forUser.getEmployee().getSalary()%></td>
 						</tr>
 						<%
 							}

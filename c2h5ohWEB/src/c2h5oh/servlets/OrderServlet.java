@@ -12,8 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sun.xml.rpc.processor.modeler.j2ee.xml.roleNameType;
+
 import c2h5oh.beans.OrderBean;
 import c2h5oh.beans.UserInfoBean;
+import c2h5oh.beans.roles.Role;
 import c2h5oh.controller.UserManager;
 import c2h5oh.jpa.Bartender;
 import c2h5oh.jpa.Order;
@@ -21,6 +24,7 @@ import c2h5oh.jpa.Product;
 import c2h5oh.jpa.User;
 import c2h5oh.jpa.Waiter;
 import c2h5oh.util.Constants;
+import c2h5oh.util.JspUtils;
 
 /**
  * Servlet implementation class OrderServlet
@@ -51,51 +55,53 @@ public class OrderServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
+		action = JspUtils.escapeForHTML(action);
 		String address;
-		Object attribute = request.getSession().getAttribute(Constants.USER_INFO_SESSION_ATTR_NAME);
+		UserInfoBean user = (UserInfoBean) request.getSession().getAttribute(Constants.USER_INFO_SESSION_ATTR_NAME);
+		if(user == null) return;
 		
-		if ("create-form".equals(action)) {
+		if ("create-form".equals(action) && Role.WAITER.equals(user.getRole())) {
 			// Create
 			List<Product> products = bean.getProducts();
 			request.setAttribute("products", products);
 			address = "/order/order-create.jsp";
-		} else if ("create".equals(action)) {
+		} else if ("create".equals(action) && Role.WAITER.equals(user.getRole())) {
 			Order order = createOrder(request, response);
 			request.setAttribute("order", order);
 			address = "/order/order-create-success.jsp";
-		} else if ("accept-form".equals(action)) {
+		} else if ("accept-form".equals(action) && Role.BARTENDER.equals(user.getRole())) {
 			// Accept
-			User user = getSessionUser(request);
-			Bartender bartender = (Bartender) user.getEmployee();
+			User userEntity = getSessionUser(request);
+			Bartender bartender = (Bartender) userEntity.getEmployee();
 			request.setAttribute("bartender", bartender);
 			List<Order> orders = bean.getNewOrders();
 			request.setAttribute("orders", orders);
 			address = "/order/order-accept.jsp";
-		} else if ("accept".equals(action)) {
+		} else if ("accept".equals(action)  && Role.BARTENDER.equals(user.getRole())) {
 			Order order = acceptOrder(request, response);
 			request.setAttribute("order", order);
 			address = "/order/order-accept-sucess.jsp";
-		} else if ("pending-form".equals(action)) {
+		} else if ("pending-form".equals(action)  && Role.BARTENDER.equals(user.getRole())) {
 			// Pending
-			User user = getSessionUser(request);
-			Bartender bartender = (Bartender) user.getEmployee();
+			User userEntity = getSessionUser(request);
+			Bartender bartender = (Bartender) userEntity.getEmployee();
 			request.setAttribute("bartender", bartender);
 			System.out.println("bartender id: " + bartender.getId());
 			List<Order> orders = bean.getAcceptedOrders(bartender);
 			request.setAttribute("orders", orders);
 			address = "/order/order-pending.jsp";
-		} else if ("pending".equals(action)) {
+		} else if ("pending".equals(action)  && Role.BARTENDER.equals(user.getRole())) {
 			Order order = pendOrder(request, response);
 			request.setAttribute("order", order);
 			address = "/order/order-pending-success.jsp";
-		} else if ("complete-form".equals(action)) {
+		} else if ("complete-form".equals(action)  && Role.WAITER.equals(user.getRole())) {
 			// Complete
-			User user = getSessionUser(request);
-			Waiter waiter = (Waiter) user.getEmployee();
+			User userEntity = getSessionUser(request);
+			Waiter waiter = (Waiter) userEntity.getEmployee();
 			List<Order> orders = bean.getPendingOrders(waiter);
 			request.setAttribute("orders", orders);
 			address = "/order/order-complete.jsp";
-		} else if ("complete".equals(action)) {
+		} else if ("complete".equals(action)  && Role.WAITER.equals(user.getRole())) {
 			Order order = completeOrder(request, response);
 			request.setAttribute("order", order);
 			address = "/order/order-complete-success.jsp";

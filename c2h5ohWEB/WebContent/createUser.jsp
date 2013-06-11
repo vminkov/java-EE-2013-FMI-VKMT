@@ -32,17 +32,26 @@
 			</div>
 			<div class="control-group">
 				<div class="controls">
+					<label>Имейл: </label><input type="email" name="email" />
+				</div>
+			<div class="control-group">
+				<div class="controls">
+					<label>Адрес: </label><input type="text" name="address" />
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<label>Заплата: </label><input type="text" name="salary" />
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
 					<label>Потр. име: </label><input type="text" name="username" />
 				</div>
 			</div>
 			<div class="control-group">
 				<div class="controls">
 					<label>Парола: </label><input type="password" name="password" />
-				</div>
-			</div>
-			<div class="control-group">
-				<div class="controls">
-					<label>Имейл: </label><input type="text" name="email" />
 				</div>
 			</div>
 			<div class="control-group">

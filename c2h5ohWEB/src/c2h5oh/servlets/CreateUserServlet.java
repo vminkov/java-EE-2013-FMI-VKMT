@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import c2h5oh.beans.UserInfoBean;
 import c2h5oh.beans.roles.Role;
 import c2h5oh.controller.UserManager;
+import c2h5oh.controller.daos.EmployeesDao;
 import c2h5oh.controller.exceptions.UserCreationException;
 import c2h5oh.controller.exceptions.UserExistsException;
 import c2h5oh.jpa.User;
@@ -25,6 +26,10 @@ import c2h5oh.util.JspUtils;
 public class CreateUserServlet extends HttpServlet {
 	@EJB
 	private UserManager userManager;
+	
+	@EJB
+	private EmployeesDao emplDao;
+	
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -57,11 +62,27 @@ public class CreateUserServlet extends HttpServlet {
 		String password = request.getParameter(Constants.PASSWORD_REQUEST_PARAM_NAME);
 		String role = request.getParameter(Constants.ROLE_REQUEST_PARAM_NAME);
 		String email = request.getParameter(Constants.EMAIL_REQUEST_PARAM_NAME);
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String address = request.getParameter("address");
+		String salary = request.getParameter("salary");
 		//validate
-		
+		username = JspUtils.escapeForHTML(username);
+		password = JspUtils.escapeForHTML(password);
+		role = JspUtils.escapeForHTML(role);
+		email = JspUtils.escapeForHTML(email);
+		firstName = JspUtils.escapeForHTML(firstName);
+		lastName = JspUtils.escapeForHTML(lastName);
+		address = JspUtils.escapeForHTML(address);
+		salary = JspUtils.escapeForHTML(salary);
 		try {
 			this.userManager.createNewUser(username, password, Role.valueOf(role));
 			User created = this.userManager.getUser(username);
+			created.getEmployee().setAddress(address);
+			created.getEmployee().setSalary(salary);
+			
+			this.emplDao.update(created.getEmployee());
+			
 			created.setEmail(email);
 			this.userManager.updateUserInfo(created);
 		} catch (UserExistsException e) {

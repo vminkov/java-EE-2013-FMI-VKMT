@@ -24,6 +24,7 @@ import c2h5oh.controller.exceptions.UserExistsException;
 import c2h5oh.controller.exceptions.WrongPasswordException;
 import c2h5oh.jpa.User;
 import c2h5oh.util.Constants;
+import c2h5oh.util.JspUtils;
 
 /**
  * Servlet implementation class LoginServlet
@@ -58,7 +59,7 @@ public class LoginServlet extends HttpServlet {
 			}
 		}
 	}
-
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -80,14 +81,13 @@ public class LoginServlet extends HttpServlet {
 				.getParameter(Constants.USERNAME_REQUEST_PARAM_NAME);
 		String password = request
 				.getParameter(Constants.PASSWORD_REQUEST_PARAM_NAME);
-		String roleString = request
-				.getParameter(Constants.ROLE_REQUEST_PARAM_NAME);
-		System.out.println(username + " " + password + " " + roleString);
+		
+		username = JspUtils.escapeForHTML(username);
+		password = JspUtils.escapeForHTML(password);
 		try {
 			if (username != null && password != null
 					&& username.length() > 0 && password.length() > 0) {
 				User loginBean = userManager.login(username, password);
-				System.out.println(loginBean);
 				if (loginBean != null) {
 					// successful login
 					UserInfoBean userInfo = new UserInfoBean();

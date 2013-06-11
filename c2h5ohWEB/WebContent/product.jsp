@@ -1,3 +1,5 @@
+<%@page import="c2h5oh.beans.roles.Role"%>
+<%@page import="c2h5oh.util.JspUtils"%>
 <%@page import="c2h5oh.util.Constants"%>
 <%@page import="c2h5oh.beans.UserInfoBean"%>
 <%@page import="c2h5oh.jpa.Product"%>
@@ -22,10 +24,12 @@
 				.getAttribute(Constants.USER_INFO_SESSION_ATTR_NAME);
 	%>
 	<%
-		if (user != null) {
+		if (user != null && user.getRole().equals(Role.DIRECTOR)) {
 	%>
 	<%
 		String action = request.getParameter("action");
+			action = JspUtils.escapeForHTML(action);
+
 			ProductBean productBean = (ProductBean) session
 					.getAttribute("productBean");
 			Product product = null;
@@ -34,6 +38,7 @@
 			String idStr = "";
 			if (action.equals("edit")) {
 				idStr = request.getParameter("id");
+				idStr = JspUtils.escapeForHTML(idStr);
 				Long id = Long.parseLong(idStr);
 				product = productBean.getProduct(id);
 				name = product.getName();
@@ -67,16 +72,16 @@
 			</div>
 
 			<div class="control-group">
-				<label>Цена</label> <input type="text" name="price"
+				<label>Цена</label> <input type="number" name="price"
 					value="<%=price%>" />
 			</div>
 			<div class="control-group">
 				<input type="submit" class="btn btn-primary" value="Готово" />
 			</div>
 		</form>
-	</div>
-	<div class="modal-footer">
-		<a href="index.jsp"><button class="btn">Начало</button></a>
+		<div class="modal-footer">
+			<a href="index.jsp"><button class="btn">Начало</button></a>
+		</div>
 	</div>
 	<%
 		}
